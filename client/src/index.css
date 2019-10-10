@@ -53,17 +53,9 @@ body {
   width: 75%;
   margin: 1rem auto;
 }
-.save-button {
-  position: absolute;
-  top: 25px;
-  right: 25px;
+.button {
   border: 1px solid grey;
   padding: 5px 10px;
-  background-color: lightseagreen;
-}
-.save-button:hover {
-  background-color: green;
-  color: white;
 }
 
 .home-button {
@@ -74,4 +66,34 @@ body {
 .movie-warning {
   color: red;
   text-align: center;
+}
+
+.buttons-wrapper {
+  position: absolute;
+  top: 25px;
+  right: 75px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.save {
+  background-color: lightseagreen;
+  color: green;
+}
+
+.save:hover {
+  background-color: skyblue;
+  color: white;
+}
+
+.edit {
+  background-color: yellow;
+  color: black;
+}
+
+.edit:hover {
+  background-color: pink;
+  color: fuchsia;
 }
