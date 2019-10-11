@@ -54,7 +54,7 @@ const MovieCardEditMode = props => {
   };
 
   // ===============Handlers=======================//
-  const [titleHandle, setTitleHandle] = useState(false);
+  const [titleHandle, setTitleHandle] = useState(true);
 
   const toggleTitleHandler = event => {
     event.preventDefault();
@@ -63,7 +63,7 @@ const MovieCardEditMode = props => {
     console.log("Value from New Handler", event.target.value);
   };
 
-  const [directorHandle, setDirectorHandle] = useState(false);
+  const [directorHandle, setDirectorHandle] = useState(true);
 
   const toggleDirectorHandle = event => {
     event.preventDefault();
@@ -72,7 +72,7 @@ const MovieCardEditMode = props => {
     console.log("Value from New Handler", event.target.value);
   };
 
-  const [metascoreHandle, setMetascoreHandle] = useState(false);
+  const [metascoreHandle, setMetascoreHandle] = useState(true);
 
   const toggleMetascoreHandler = event => {
     event.preventDefault();
@@ -88,7 +88,11 @@ const MovieCardEditMode = props => {
     <div className="movie-card">
       <form>
         <h2>
-          {title}
+          {titleHandle ? (
+            title
+          ) : (
+            <input value={newMovieInfo.title} onChange={changeHandler} />
+          )}
           <input
             type="checkbox"
             value={titleHandle}
@@ -98,7 +102,11 @@ const MovieCardEditMode = props => {
         <div className="movie-director">
           Director:{" "}
           <em>
-            {director}
+            {directorHandle ? (
+              director
+            ) : (
+              <input value={newMovieInfo.director} onChange={changeHandler} />
+            )}
             <input
               type="checkbox"
               value={directorHandle}
@@ -109,7 +117,11 @@ const MovieCardEditMode = props => {
         <div className="movie-metascore">
           Metascore:{" "}
           <strong>
-            {metascore}
+            {metascoreHandle ? (
+              metascore
+            ) : (
+              <input value={newMovieInfo.metascore} onChange={changeHandler} />
+            )}
             <input
               type="checkbox"
               value={metascoreHandle}
