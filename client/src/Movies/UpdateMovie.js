@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import MovieCard from "./MovieCard.js";
 import axios from "axios";
 
 const UpdateMovie = props => {
@@ -17,15 +16,10 @@ const UpdateMovie = props => {
       .catch(err => console.log(err.response));
   }, []);
 
-  console.log("Props from UpdateMovie.js", props);
-
-  console.log("Movie in UpdateMovie.js", movie);
-  console.log("Movie in UpdateMovie.js", Object.keys(movie).length);
-
   return (
     <>
       {Object.keys(movie).length > 0 ? (
-        <MovieCardEditMode movie={movie} />
+        <MovieCardEditMode history={props.history} movie={movie} />
       ) : (
         <></>
       )}
@@ -39,21 +33,22 @@ export default UpdateMovie;
 
 const MovieCardEditMode = props => {
   const [newMovieInfo, setNewMovieInfo] = useState({
-    id: props.id,
-    stars: props.stars,
-    title: "",
-    director: "",
-    metascore: 0
+    id: props.movie.id,
+    stars: props.movie.stars,
+    title: props.movie.title,
+    director: props.movie.director,
+    metascore: props.movie.metascore
   });
 
   const changeHandler = event => {
+    console.log(event.target.name, " : ", event.target.value);
     setNewMovieInfo({
       ...newMovieInfo,
       [event.target.name]: event.target.value
     });
   };
 
-  // ===============Handlers=======================//
+  // ===============ToggleHandlers=======================//
   const [titleHandle, setTitleHandle] = useState(true);
 
   const toggleTitleHandler = event => {
@@ -80,18 +75,39 @@ const MovieCardEditMode = props => {
     setMetascoreHandle(!metascoreHandle);
     console.log("Value from New Handler", event.target.value);
   };
-  // ===============Handlers=======================//
+  // ===============ToggleHandlers=======================//
 
-  console.log("props from MovieCard", props);
+  // ===============SubmitHandlers=======================//
+
+  console.log("Props from UpdateMovie.js", props);
+
+  const SubmitForm = event => {
+    console.log("Props from Submit", props);
+
+    event.preventDefault();
+    console.log("New Movie", newMovieInfo);
+    axios
+      .put(`http://localhost:5000/api/movies/${props.movie.id}`, newMovieInfo)
+      .then(res => {
+        console.log("Response from put", res);
+        props.history.push("/");
+      })
+      .catch(err => console.log(err));
+  };
+
   const { title, director, metascore, stars } = props.movie;
   return (
     <div className="movie-card">
-      <form>
+      <form onSubmit={SubmitForm}>
         <h2>
           {titleHandle ? (
             title
           ) : (
-            <input value={newMovieInfo.title} onChange={changeHandler} />
+            <input
+              name="title"
+              value={newMovieInfo.title}
+              onChange={changeHandler}
+            />
           )}
           <input
             type="checkbox"
@@ -105,7 +121,11 @@ const MovieCardEditMode = props => {
             {directorHandle ? (
               director
             ) : (
-              <input value={newMovieInfo.director} onChange={changeHandler} />
+              <input
+                name="director"
+                value={newMovieInfo.director}
+                onChange={changeHandler}
+              />
             )}
             <input
               type="checkbox"
@@ -120,7 +140,11 @@ const MovieCardEditMode = props => {
             {metascoreHandle ? (
               metascore
             ) : (
-              <input value={newMovieInfo.metascore} onChange={changeHandler} />
+              <input
+                name="metascore"
+                value={newMovieInfo.metascore}
+                onChange={changeHandler}
+              />
             )}
             <input
               type="checkbox"
@@ -137,6 +161,7 @@ const MovieCardEditMode = props => {
             {star}
           </div>
         ))}
+        <button hidden />
       </form>
     </div>
   );
