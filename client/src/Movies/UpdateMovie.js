@@ -24,14 +24,68 @@ const UpdateMovie = props => {
 
   return (
     <>
-      <form>
-        <strong>Edit Movie</strong>
-        <input type="checkbox" />
-      </form>
-
-      {Object.keys(movie).length > 0 ? <MovieCard movie={movie} /> : <></>}
+      {Object.keys(movie).length > 0 ? (
+        <MovieCardEditMode movie={movie} />
+      ) : (
+        <></>
+      )}
     </>
   );
 };
 
 export default UpdateMovie;
+
+const MovieCardEditMode = props => {
+  const [titleToggle, setTitleCheck] = useState(false);
+  const [directorToggle, setDirectorToggle] = useState(false);
+  const [metaScoreToggle, setMetaScoreToggle] = useState(false);
+
+  const [newMovieInfo, setNewMovieInfo] = useState({
+    id: props.id,
+    stars: props.stars,
+    title: "",
+    director: "",
+    metascore: 0
+  });
+
+  const toggleHandler = event => {
+    event.preventDefault();
+  };
+
+  console.log("props from MovieCard", props);
+  const { title, director, metascore, stars } = props.movie;
+  return (
+    <div className="movie-card">
+      <h2>
+        {title}
+        <input name="titleToggle" value={titleToggle} type="checkbox" />
+      </h2>
+      <div className="movie-director">
+        Director:{" "}
+        <em>
+          {director}
+          <input name="directorToggle" value={directorToggle} type="checkbox" />
+        </em>
+      </div>
+      <div className="movie-metascore">
+        Metascore:{" "}
+        <strong>
+          {metascore}
+          <input
+            name="metaScoreToggle"
+            value={metaScoreToggle}
+            type="checkbox"
+          />
+        </strong>
+      </div>
+
+      <h3>Actors</h3>
+
+      {stars.map(star => (
+        <div key={star} className="movie-star">
+          {star}
+        </div>
+      ))}
+    </div>
+  );
+};
