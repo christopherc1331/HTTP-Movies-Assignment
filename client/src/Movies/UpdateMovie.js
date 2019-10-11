@@ -35,11 +35,9 @@ const UpdateMovie = props => {
 
 export default UpdateMovie;
 
-const MovieCardEditMode = props => {
-  const [titleToggle, setTitleCheck] = useState(false);
-  const [directorToggle, setDirectorToggle] = useState(false);
-  const [metaScoreToggle, setMetaScoreToggle] = useState(false);
+// ===========UPDATE FORM==================
 
+const MovieCardEditMode = props => {
   const [newMovieInfo, setNewMovieInfo] = useState({
     id: props.id,
     stars: props.stars,
@@ -48,44 +46,86 @@ const MovieCardEditMode = props => {
     metascore: 0
   });
 
-  const toggleHandler = event => {
-    event.preventDefault();
+  const changeHandler = event => {
+    setNewMovieInfo({
+      ...newMovieInfo,
+      [event.target.name]: event.target.value
+    });
   };
+
+  // ===============Handlers=======================//
+  const [titleHandle, setTitleHandle] = useState(false);
+
+  const toggleTitleHandler = event => {
+    event.preventDefault();
+
+    setTitleHandle(!titleHandle);
+    console.log("Value from New Handler", event.target.value);
+  };
+
+  const [directorHandle, setDirectorHandle] = useState(false);
+
+  const toggleDirectorHandle = event => {
+    event.preventDefault();
+
+    setDirectorHandle(!directorHandle);
+    console.log("Value from New Handler", event.target.value);
+  };
+
+  const [metascoreHandle, setMetascoreHandle] = useState(false);
+
+  const toggleMetascoreHandler = event => {
+    event.preventDefault();
+
+    setMetascoreHandle(!metascoreHandle);
+    console.log("Value from New Handler", event.target.value);
+  };
+  // ===============Handlers=======================//
 
   console.log("props from MovieCard", props);
   const { title, director, metascore, stars } = props.movie;
   return (
     <div className="movie-card">
-      <h2>
-        {title}
-        <input name="titleToggle" value={titleToggle} type="checkbox" />
-      </h2>
-      <div className="movie-director">
-        Director:{" "}
-        <em>
-          {director}
-          <input name="directorToggle" value={directorToggle} type="checkbox" />
-        </em>
-      </div>
-      <div className="movie-metascore">
-        Metascore:{" "}
-        <strong>
-          {metascore}
+      <form>
+        <h2>
+          {title}
           <input
-            name="metaScoreToggle"
-            value={metaScoreToggle}
             type="checkbox"
+            value={titleHandle}
+            onClick={toggleTitleHandler}
           />
-        </strong>
-      </div>
-
-      <h3>Actors</h3>
-
-      {stars.map(star => (
-        <div key={star} className="movie-star">
-          {star}
+        </h2>
+        <div className="movie-director">
+          Director:{" "}
+          <em>
+            {director}
+            <input
+              type="checkbox"
+              value={directorHandle}
+              onClick={toggleDirectorHandle}
+            />
+          </em>
         </div>
-      ))}
+        <div className="movie-metascore">
+          Metascore:{" "}
+          <strong>
+            {metascore}
+            <input
+              type="checkbox"
+              value={metascoreHandle}
+              onClick={toggleMetascoreHandler}
+            />
+          </strong>
+        </div>
+
+        <h3>Actors</h3>
+
+        {stars.map(star => (
+          <div key={star} className="movie-star">
+            {star}
+          </div>
+        ))}
+      </form>
     </div>
   );
 };
